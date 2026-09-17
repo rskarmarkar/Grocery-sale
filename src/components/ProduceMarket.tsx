@@ -57,53 +57,53 @@ export const ProduceMarket: React.FC<ProduceMarketProps> = ({
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Organic Hero Section */}
-      <section className="relative rounded-3xl bg-radial from-[#385b42] to-[#223929] text-white p-6 sm:p-10 lg:p-12 mb-10 overflow-hidden shadow-sm border border-[#3c6146]">
+      <section className="relative rounded-3xl bg-radial from-[#fff3e0] to-[#f4a261] text-[#4a2e1e] p-6 sm:p-10 lg:p-12 mb-10 overflow-hidden shadow-sm border border-[#f0c48a]">
         {/* Soft background glow & organic leaf watermark */}
-        <div className="absolute right-0 bottom-0 translate-x-12 translate-y-12 w-96 h-96 bg-[#4c7a59] rounded-full blur-3xl opacity-30 pointer-events-none"></div>
-        
+        <div className="absolute right-0 bottom-0 translate-x-12 translate-y-12 w-96 h-96 bg-[#ffb877] rounded-full blur-3xl opacity-40 pointer-events-none"></div>
+
         <div className="relative z-10 max-w-3xl">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#182a1e]/60 backdrop-blur-xs text-[#98e6b3] text-xs font-semibold mb-4 border border-[#487354]/60">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white text-[#c1502e] text-xs font-semibold mb-4 border border-[#f0c48a] shadow-2xs">
             <Leaf className="w-3.5 h-3.5" />
-            <span>Today's Morning Harvest • Direct from Soil to Table</span>
+            <span>Today's Harvest • Fresh & Ready to Grab</span>
           </div>
 
-          <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-tight mb-4">
-            Freshly Picked Organic Produce, Straight from Our Fields
+          <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#4a2e1e] leading-tight mb-4">
+            Fresh Off the Farm, Ready for Your Cart!
           </h1>
 
-          <p className="text-sm sm:text-base text-[#d8e6dc] leading-relaxed mb-6 max-w-2xl">
-            Select what you want from our daily sale list below. Your cart calculates your total instantly, and your order is stored securely in our cloud system for same-day stand pickup or local delivery.
+          <p className="text-sm sm:text-base text-[#6b4a34] leading-relaxed mb-6 max-w-2xl">
+            Pick what looks good, toss it in your cart, and swing by the stand today — we'll have it waiting for you, still a little dirty from the field.
           </p>
 
           {/* Quick Farm Feature Pills */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t border-white/15 text-xs text-[#e0ece3]">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t border-[#4a2e1e]/15 text-xs text-[#4a2e1e]">
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-white/10 flex items-center justify-center shrink-0">
-                <Clock className="w-3.5 h-3.5 text-[#98e6b3]" />
+              <div className="w-7 h-7 rounded-lg bg-white flex items-center justify-center shrink-0">
+                <Clock className="w-3.5 h-3.5 text-[#c1502e]" />
               </div>
               <div>
-                <span className="font-bold text-white block">Stand Pickup</span>
-                <span className="text-[11px] text-[#b8d1c0]">Ready within 2 hours</span>
+                <span className="font-bold text-[#4a2e1e] block">Grab & Go Pickup</span>
+                <span className="text-[11px] text-[#8a6a52]">Ready in about 2 hours</span>
               </div>
             </div>
 
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-white/10 flex items-center justify-center shrink-0">
-                <ShieldCheck className="w-3.5 h-3.5 text-[#98e6b3]" />
+              <div className="w-7 h-7 rounded-lg bg-white flex items-center justify-center shrink-0">
+                <ShieldCheck className="w-3.5 h-3.5 text-[#c1502e]" />
               </div>
               <div>
-                <span className="font-bold text-white block">100% Organic Soil</span>
-                <span className="text-[11px] text-[#b8d1c0]">Non-GMO & spray-free</span>
+                <span className="font-bold text-[#4a2e1e] block">Grown the Honest Way</span>
+                <span className="text-[11px] text-[#8a6a52]">No sprays, no shortcuts</span>
               </div>
             </div>
 
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-white/10 flex items-center justify-center shrink-0">
-                <MapPin className="w-3.5 h-3.5 text-[#98e6b3]" />
+              <div className="w-7 h-7 rounded-lg bg-white flex items-center justify-center shrink-0">
+                <MapPin className="w-3.5 h-3.5 text-[#c1502e]" />
               </div>
               <div>
-                <span className="font-bold text-white block">Valley Stand</span>
-                <span className="text-[11px] text-[#b8d1c0]">4800 Willow Creek Rd</span>
+                <span className="font-bold text-[#4a2e1e] block">Come Say Hi</span>
+                <span className="text-[11px] text-[#8a6a52]">4800 Willow Creek Rd</span>
               </div>
             </div>
           </div>
