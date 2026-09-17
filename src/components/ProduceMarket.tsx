@@ -57,53 +57,53 @@ export const ProduceMarket: React.FC<ProduceMarketProps> = ({
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Organic Hero Section */}
-      <section className="relative rounded-3xl bg-radial from-[#fff3e0] to-[#f4a261] text-[#4a2e1e] p-6 sm:p-10 lg:p-12 mb-10 overflow-hidden shadow-sm border border-[#f0c48a]">
+      <section className="relative rounded-3xl bg-radial from-honey to-honey text-clay p-6 sm:p-10 lg:p-12 mb-10 overflow-hidden shadow-sm border border-honey">
         {/* Soft background glow & organic leaf watermark */}
-        <div className="absolute right-0 bottom-0 translate-x-12 translate-y-12 w-96 h-96 bg-[#ffb877] rounded-full blur-3xl opacity-40 pointer-events-none"></div>
+        <div className="absolute right-0 bottom-0 translate-x-12 translate-y-12 w-96 h-96 bg-honey rounded-full blur-3xl opacity-40 pointer-events-none"></div>
 
         <div className="relative z-10 max-w-3xl">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white text-[#c1502e] text-xs font-semibold mb-4 border border-[#f0c48a] shadow-2xs">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white text-terracotta text-xs font-semibold mb-4 border border-honey shadow-2xs">
             <Leaf className="w-3.5 h-3.5" />
             <span>Today's Harvest • Fresh & Ready to Grab</span>
           </div>
 
-          <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#4a2e1e] leading-tight mb-4">
+          <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-clay leading-tight mb-4">
             Fresh Off the Farm, Ready for Your Cart!
           </h1>
 
-          <p className="text-sm sm:text-base text-[#6b4a34] leading-relaxed mb-6 max-w-2xl">
+          <p className="text-sm sm:text-base text-clay leading-relaxed mb-6 max-w-2xl">
             Pick what looks good, toss it in your cart, and swing by the stand today — we'll have it waiting for you, still a little dirty from the field.
           </p>
 
           {/* Quick Farm Feature Pills */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t border-[#4a2e1e]/15 text-xs text-[#4a2e1e]">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t border-clay/15 text-xs text-clay">
             <div className="flex items-center gap-2">
               <div className="w-7 h-7 rounded-lg bg-white flex items-center justify-center shrink-0">
-                <Clock className="w-3.5 h-3.5 text-[#c1502e]" />
+                <Clock className="w-3.5 h-3.5 text-terracotta" />
               </div>
               <div>
-                <span className="font-bold text-[#4a2e1e] block">Grab & Go Pickup</span>
-                <span className="text-[11px] text-[#8a6a52]">Ready in about 2 hours</span>
+                <span className="font-bold text-clay block">Grab & Go Pickup</span>
+                <span className="text-[11px] text-clay">Ready in about 2 hours</span>
               </div>
             </div>
 
             <div className="flex items-center gap-2">
               <div className="w-7 h-7 rounded-lg bg-white flex items-center justify-center shrink-0">
-                <ShieldCheck className="w-3.5 h-3.5 text-[#c1502e]" />
+                <ShieldCheck className="w-3.5 h-3.5 text-terracotta" />
               </div>
               <div>
-                <span className="font-bold text-[#4a2e1e] block">Grown the Honest Way</span>
-                <span className="text-[11px] text-[#8a6a52]">No sprays, no shortcuts</span>
+                <span className="font-bold text-clay block">Grown the Honest Way</span>
+                <span className="text-[11px] text-clay">No sprays, no shortcuts</span>
               </div>
             </div>
 
             <div className="flex items-center gap-2">
               <div className="w-7 h-7 rounded-lg bg-white flex items-center justify-center shrink-0">
-                <MapPin className="w-3.5 h-3.5 text-[#c1502e]" />
+                <MapPin className="w-3.5 h-3.5 text-terracotta" />
               </div>
               <div>
-                <span className="font-bold text-[#4a2e1e] block">Come Say Hi</span>
-                <span className="text-[11px] text-[#8a6a52]">4800 Willow Creek Rd</span>
+                <span className="font-bold text-clay block">Come Say Hi</span>
+                <span className="text-[11px] text-clay">4800 Willow Creek Rd</span>
               </div>
             </div>
           </div>
@@ -124,21 +124,21 @@ export const ProduceMarket: React.FC<ProduceMarketProps> = ({
 
       {/* Cart Recipe Inspiration Banner */}
       {totalCartItems > 0 && (
-        <div className="mb-6 p-4 rounded-2xl bg-radial from-[#edf6f0] to-[#e4eee7] border border-[#c4e0ce] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-2xs">
+        <div className="mb-6 p-4 rounded-2xl bg-radial from-success-soft to-success-soft border border-border-soft flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-2xs">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#2d4734] text-white flex items-center justify-center shrink-0 shadow-2xs">
-              <ChefHat className="w-5 h-5 text-[#9dd6b1]" />
+            <div className="w-10 h-10 rounded-xl bg-sprout-900 text-white flex items-center justify-center shrink-0 shadow-2xs">
+              <ChefHat className="w-5 h-5 text-mint" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-display font-bold text-sm text-[#1e3c27]">
+                <span className="font-display font-bold text-sm text-sprout-900">
                   Farm Recipes Ready for Your Cart
                 </span>
-                <span className="px-2 py-0.5 rounded-full bg-[#2d4734] text-white text-[10px] font-bold">
+                <span className="px-2 py-0.5 rounded-full bg-sprout-900 text-white text-[10px] font-bold">
                   {cart.length} {cart.length === 1 ? 'produce item' : 'produce items'}
                 </span>
               </div>
-              <p className="text-xs text-[#486350] leading-snug">
+              <p className="text-xs text-sprout-700 leading-snug">
                 Discover personalized farm-to-table dishes featuring {cart.slice(0, 2).map(c => c.produce.name).join(', ')}{cart.length > 2 ? ` and ${cart.length - 2} more` : ''}.
               </p>
             </div>
@@ -146,9 +146,9 @@ export const ProduceMarket: React.FC<ProduceMarketProps> = ({
           <button
             id="market-banner-open-recipes-btn"
             onClick={onOpenRecipes}
-            className="px-4 py-2 rounded-xl bg-[#2d4734] hover:bg-[#203627] text-white font-bold text-xs flex items-center gap-1.5 shadow-2xs transition-all shrink-0"
+            className="px-4 py-2 rounded-xl bg-sprout-900 hover:bg-sprout-900 text-white font-bold text-xs flex items-center gap-1.5 shadow-2xs transition-all shrink-0"
           >
-            <Sparkles className="w-3.5 h-3.5 text-[#9dd6b1]" />
+            <Sparkles className="w-3.5 h-3.5 text-mint" />
             <span>Get Recipes from Cart</span>
           </button>
         </div>
@@ -156,14 +156,14 @@ export const ProduceMarket: React.FC<ProduceMarketProps> = ({
 
       {/* Produce Grid */}
       {filteredProduce.length === 0 ? (
-        <div className="bg-[#fffefc] rounded-2xl border border-[#dfd7c9] p-12 text-center my-6">
-          <div className="w-16 h-16 rounded-full bg-[#f1ede6] text-[#738075] flex items-center justify-center mx-auto mb-3">
+        <div className="bg-pale rounded-2xl border border-border p-12 text-center my-6">
+          <div className="w-16 h-16 rounded-full bg-pale text-muted flex items-center justify-center mx-auto mb-3">
             <Sprout className="w-8 h-8" />
           </div>
-          <h3 className="font-display font-bold text-lg text-[#242b26] mb-1">
+          <h3 className="font-display font-bold text-lg text-ink mb-1">
             No produce found
           </h3>
-          <p className="text-xs sm:text-sm text-[#6e7870] max-w-sm mx-auto mb-4">
+          <p className="text-xs sm:text-sm text-muted max-w-sm mx-auto mb-4">
             We couldn't find any produce matching your current search or category filter.
           </p>
           <button
@@ -172,7 +172,7 @@ export const ProduceMarket: React.FC<ProduceMarketProps> = ({
               setSearchQuery('');
               setInStockOnly(false);
             }}
-            className="px-4 py-2 rounded-xl bg-[#2d4734] text-white text-xs font-semibold hover:bg-[#223929]"
+            className="px-4 py-2 rounded-xl bg-sprout-900 text-white text-xs font-semibold hover:bg-sprout-700"
           >
             Clear Filters & View All Harvest
           </button>
@@ -197,17 +197,17 @@ export const ProduceMarket: React.FC<ProduceMarketProps> = ({
       {/* STICKY BOTTOM INSTANT CART SUMMARY BAR FOR SHOPPERS */}
       {totalCartItems > 0 && (
         <div className="sticky bottom-6 z-20 mt-8">
-          <div className="max-w-2xl mx-auto bg-[#2d4734] text-white p-4 rounded-2xl shadow-xl border border-[#3e6047] flex items-center justify-between gap-4 backdrop-blur-md">
+          <div className="max-w-2xl mx-auto bg-sprout-900 text-white p-4 rounded-2xl shadow-xl border border-sprout-700 flex items-center justify-between gap-4 backdrop-blur-md">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-[#3f6349] flex items-center justify-center text-white shrink-0">
-                <ShoppingBag className="w-5 h-5 text-[#9dd6b1]" />
+              <div className="w-10 h-10 rounded-xl bg-sprout-700 flex items-center justify-center text-white shrink-0">
+                <ShoppingBag className="w-5 h-5 text-mint" />
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold text-[#c7dfd0] uppercase tracking-wider">
+                  <span className="text-xs font-bold text-border-soft uppercase tracking-wider">
                     Instant Cart Total
                   </span>
-                  <span className="px-2 py-0.5 rounded-full bg-[#c47d4e] text-[10px] font-bold text-white">
+                  <span className="px-2 py-0.5 rounded-full bg-terracotta text-[10px] font-bold text-white">
                     {totalCartItems} {totalCartItems === 1 ? 'item' : 'items'}
                   </span>
                 </div>
@@ -221,17 +221,17 @@ export const ProduceMarket: React.FC<ProduceMarketProps> = ({
               <button
                 id="sticky-recipes-btn"
                 onClick={onOpenRecipes}
-                className="px-3.5 sm:px-4 py-2.5 rounded-xl bg-[#3f6349] hover:bg-[#4d7858] active:scale-95 text-white font-bold text-xs sm:text-sm flex items-center gap-1.5 transition-all shadow-sm border border-[#52805f]"
+                className="px-3.5 sm:px-4 py-2.5 rounded-xl bg-sprout-700 hover:bg-sprout-700 active:scale-95 text-white font-bold text-xs sm:text-sm flex items-center gap-1.5 transition-all shadow-sm border border-sprout-600"
                 title="Get recipes from your selected produce"
               >
-                <ChefHat className="w-4 h-4 text-[#9dd6b1]" />
+                <ChefHat className="w-4 h-4 text-mint" />
                 <span>Recipes</span>
               </button>
 
               <button
                 id="sticky-checkout-btn"
                 onClick={onOpenCart}
-                className="px-4 sm:px-5 py-2.5 rounded-xl bg-white hover:bg-[#f2efe9] active:scale-95 text-[#2d4734] font-bold text-xs sm:text-sm flex items-center gap-2 transition-all shadow-sm"
+                className="px-4 sm:px-5 py-2.5 rounded-xl bg-white hover:bg-border-soft active:scale-95 text-sprout-900 font-bold text-xs sm:text-sm flex items-center gap-2 transition-all shadow-sm"
               >
                 <span>View Cart & Order</span>
                 <ArrowRight className="w-4 h-4" />
@@ -242,40 +242,40 @@ export const ProduceMarket: React.FC<ProduceMarketProps> = ({
       )}
 
       {/* Farm Stand Footer / Info */}
-      <footer className="mt-16 pt-12 border-t border-[#dfd7c9] pb-12 text-xs text-[#6e7870]">
+      <footer className="mt-16 pt-12 border-t border-border pb-12 text-xs text-muted">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           <div>
-            <div className="flex items-center gap-2 text-[#242b26] font-display font-bold text-base mb-2">
-              <Sprout className="w-5 h-5 text-[#2d4734]" />
+            <div className="flex items-center gap-2 text-ink font-display font-bold text-base mb-2">
+              <Sprout className="w-5 h-5 text-sprout-900" />
               <span>Willow Creek Organic Farm</span>
             </div>
-            <p className="text-[#556358] leading-relaxed">
+            <p className="text-muted leading-relaxed">
               Family-owned sustainable agriculture. All produce is pesticide-free, harvested at peak sweetness, and sold directly to our community neighbors.
             </p>
           </div>
 
           <div>
-            <h4 className="font-bold text-[#242b26] uppercase tracking-wider text-[11px] mb-2">
+            <h4 className="font-bold text-ink uppercase tracking-wider text-[11px] mb-2">
               Farm Stand Hours & Pickup
             </h4>
-            <p className="space-y-1 text-[#556358]">
+            <p className="space-y-1 text-muted">
               <span className="block">Monday – Friday: 10:00 AM – 6:00 PM</span>
               <span className="block">Saturday – Sunday: 8:00 AM – 4:00 PM</span>
-              <span className="block text-[#8a5d3b] font-medium mt-1">Local deliveries leave daily at 5:00 PM</span>
+              <span className="block text-clay font-medium mt-1">Local deliveries leave daily at 5:00 PM</span>
             </p>
           </div>
 
           <div>
-            <h4 className="font-bold text-[#242b26] uppercase tracking-wider text-[11px] mb-2">
+            <h4 className="font-bold text-ink uppercase tracking-wider text-[11px] mb-2">
               Instant Total & Cloud Guarantee
             </h4>
-            <p className="text-[#556358] leading-relaxed">
+            <p className="text-muted leading-relaxed">
               Cart totals are calculated live without hidden fees. Orders are synchronized immediately to our cloud inventory to ensure fresh packing.
             </p>
           </div>
         </div>
 
-        <div className="pt-6 border-t border-[#ede7dc] text-center text-[#8d9890]">
+        <div className="pt-6 border-t border-border-soft text-center text-border">
           © {new Date().getFullYear()} Willow Creek Farm • Fresh Harvest Direct to Consumer
         </div>
       </footer>

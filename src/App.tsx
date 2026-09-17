@@ -230,10 +230,10 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#faf8f4] text-[#242b26] flex flex-col selection:bg-[#c9decb] selection:text-[#183522]">
+    <div className="min-h-screen bg-cream text-ink flex flex-col selection:bg-border-soft selection:text-sprout-900">
       {/* Toast notification */}
       {toastMessage && (
-        <div className="fixed top-24 right-4 z-50 bg-[#2d4734] text-white px-4 py-2.5 rounded-xl shadow-lg border border-[#446b4e] text-xs font-semibold animate-in slide-in-from-top-2 duration-200">
+        <div className="fixed top-24 right-4 z-50 bg-sprout-900 text-white px-4 py-2.5 rounded-xl shadow-lg border border-sprout-700 text-xs font-semibold animate-in slide-in-from-top-2 duration-200">
           {toastMessage}
         </div>
       )}
