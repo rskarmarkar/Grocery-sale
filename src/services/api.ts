@@ -175,8 +175,8 @@ export async function fetchRecipesFromCart(
         source: data.source || 'gemini'
       };
     }
-  } catch (err) {
-    console.warn('Network or AI error fetching recipes, falling back to farm kitchen catalog', err);
+  } catch {
+    // Gracefully fall back to client-side farm recipe catalog
   }
 
   // Fallback client-side generation

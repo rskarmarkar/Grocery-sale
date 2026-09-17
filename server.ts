@@ -777,32 +777,54 @@ Requirements:
 - Keep pantry staples realistic (salt, pepper, oil, butter, garlic, pasta, rice, flour, simple seasonings).
 - Instructions should be easy to follow for home cooks.`;
 
-      const aiResponse = await ai.models.generateContent({
-        model: 'gemini-3.8-flash',
-        contents: prompt,
-        config: {
-          responseMimeType: 'application/json'
-        }
-      });
+      const modelsToTry = ['gemini-flash-latest', 'gemini-3.1-flash-lite', 'gemini-3.8-flash'];
+      let parsedRecipes: any = null;
 
-      const responseText = aiResponse.text;
-      if (responseText) {
+      for (const modelName of modelsToTry) {
         try {
-          const parsed = JSON.parse(responseText);
-          if (Array.isArray(parsed) && parsed.length > 0) {
-            res.json({
-              recipes: parsed,
-              source: 'gemini',
-              cartIngredientsCount: cartItems.length
-            });
-            return;
+          const aiResponse = await ai.models.generateContent({
+            model: modelName,
+            contents: prompt,
+            config: {
+              responseMimeType: 'application/json'
+            }
+          });
+
+          let responseText = aiResponse.text;
+          if (responseText) {
+            // Strip markdown code fences if model enclosed JSON
+            responseText = responseText.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```$/i, '').trim();
+            const parsed = JSON.parse(responseText);
+            if (Array.isArray(parsed) && parsed.length > 0) {
+              parsedRecipes = parsed;
+              break;
+            }
           }
-        } catch (parseErr) {
-          console.warn('Failed to parse Gemini recipe JSON, using fallback', parseErr);
+        } catch (err: any) {
+          // If model is experiencing temporary capacity issues (503 / 429), try next model candidate
+          const isCapacityOrBusy = 
+            err?.status === 503 || 
+            err?.status === 429 || 
+            (typeof err?.message === 'string' && (err.message.includes('503') || err.message.includes('demand') || err.message.includes('UNAVAILABLE')));
+          
+          if (isCapacityOrBusy) {
+            continue;
+          }
+          // For other errors, exit loop and use fallback recipes
+          break;
         }
       }
-    } catch (genErr) {
-      console.warn('Gemini API recipe generation error, using fallback', genErr);
+
+      if (parsedRecipes && Array.isArray(parsedRecipes) && parsedRecipes.length > 0) {
+        res.json({
+          recipes: parsedRecipes,
+          source: 'gemini',
+          cartIngredientsCount: cartItems.length
+        });
+        return;
+      }
+    } catch {
+      // Gracefully continue to curated farm kitchen fallback
     }
   }
 

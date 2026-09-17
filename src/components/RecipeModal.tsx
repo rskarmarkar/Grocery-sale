@@ -92,63 +92,71 @@ ${recipe.chefTip || 'Harvested fresh from Willow Creek Farm.'}
   };
 
   const handlePrintRecipe = (recipe: Recipe) => {
-    const printWindow = window.open('', '_blank');
-    if (!printWindow) return;
+    try {
+      const printWindow = window.open('', '_blank');
+      if (printWindow) {
+        printWindow.document.write(`
+          <html>
+            <head>
+              <title>${recipe.title} - Willow Creek Farm</title>
+              <style>
+                body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding: 40px; color: #242b26; line-height: 1.6; max-width: 700px; margin: 0 auto; }
+                h1 { font-size: 26px; color: #2d4734; margin-bottom: 6px; }
+                .meta { color: #647167; font-size: 14px; margin-bottom: 20px; border-bottom: 2px solid #e0d8cc; padding-bottom: 12px; }
+                .meta span { margin-right: 18px; font-weight: 600; }
+                h2 { font-size: 17px; color: #2d4734; margin-top: 24px; margin-bottom: 8px; border-bottom: 1px solid #e4ddd2; padding-bottom: 4px; }
+                ul, ol { padding-left: 22px; margin-bottom: 16px; }
+                li { margin-bottom: 6px; font-size: 15px; }
+                .tip { background: #f4efe6; border-left: 4px solid #2d4734; padding: 14px 18px; border-radius: 6px; margin-top: 24px; font-size: 14px; font-style: italic; }
+                .footer { margin-top: 36px; padding-top: 14px; border-top: 1px dashed #c0b8ac; font-size: 12px; color: #888; text-align: center; }
+              </style>
+            </head>
+            <body>
+              <h1>${recipe.title}</h1>
+              <div class="meta">
+                <span>Prep: ${recipe.prepTime}</span>
+                <span>Cook: ${recipe.cookTime}</span>
+                <span>Servings: ${recipe.servings}</span>
+                <span>Difficulty: ${recipe.difficulty}</span>
+              </div>
+              <p>${recipe.description}</p>
+              
+              <h2>Farm Basket Ingredients Used</h2>
+              <ul>
+                ${recipe.usedCartIngredients.map(i => `<li><strong>${i}</strong></li>`).join('')}
+              </ul>
 
-    printWindow.document.write(`
-      <html>
-        <head>
-          <title>${recipe.title} - Willow Creek Farm</title>
-          <style>
-            body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding: 40px; color: #242b26; line-height: 1.6; max-width: 700px; margin: 0 auto; }
-            h1 { font-size: 26px; color: #2d4734; margin-bottom: 6px; }
-            .meta { color: #647167; font-size: 14px; margin-bottom: 20px; border-bottom: 2px solid #e0d8cc; padding-bottom: 12px; }
-            .meta span { margin-right: 18px; font-weight: 600; }
-            h2 { font-size: 17px; color: #2d4734; margin-top: 24px; margin-bottom: 8px; border-bottom: 1px solid #e4ddd2; padding-bottom: 4px; }
-            ul, ol { padding-left: 22px; margin-bottom: 16px; }
-            li { margin-bottom: 6px; font-size: 15px; }
-            .tip { background: #f4efe6; border-left: 4px solid #2d4734; padding: 14px 18px; border-radius: 6px; margin-top: 24px; font-size: 14px; font-style: italic; }
-            .footer { margin-top: 36px; padding-top: 14px; border-top: 1px dashed #c0b8ac; font-size: 12px; color: #888; text-align: center; }
-          </style>
-        </head>
-        <body>
-          <h1>${recipe.title}</h1>
-          <div class="meta">
-            <span>Prep: ${recipe.prepTime}</span>
-            <span>Cook: ${recipe.cookTime}</span>
-            <span>Servings: ${recipe.servings}</span>
-            <span>Difficulty: ${recipe.difficulty}</span>
-          </div>
-          <p>${recipe.description}</p>
-          
-          <h2>Farm Basket Ingredients Used</h2>
-          <ul>
-            ${recipe.usedCartIngredients.map(i => `<li><strong>${i}</strong></li>`).join('')}
-          </ul>
+              <h2>Pantry Staples</h2>
+              <ul>
+                ${recipe.pantryStaplesNeeded.map(i => `<li>${i}</li>`).join('')}
+              </ul>
 
-          <h2>Pantry Staples</h2>
-          <ul>
-            ${recipe.pantryStaplesNeeded.map(i => `<li>${i}</li>`).join('')}
-          </ul>
+              <h2>Instructions</h2>
+              <ol>
+                ${recipe.instructions.map(i => `<li>${i}</li>`).join('')}
+              </ol>
 
-          <h2>Instructions</h2>
-          <ol>
-            ${recipe.instructions.map(i => `<li>${i}</li>`).join('')}
-          </ol>
+              ${recipe.chefTip ? `<div class="tip"><strong>Farmer's Tip:</strong> ${recipe.chefTip}</div>` : ''}
 
-          ${recipe.chefTip ? `<div class="tip"><strong>Farmer's Tip:</strong> ${recipe.chefTip}</div>` : ''}
+              <div class="footer">
+                Willow Creek Farm • Fresh Organic Harvest to Table
+              </div>
+            </body>
+          </html>
+        `);
+        printWindow.document.close();
+        printWindow.focus();
+        setTimeout(() => {
+          printWindow.print();
+        }, 250);
+        return;
+      }
+    } catch {
+      // Fall back if popups/window.open is blocked by iframe sandbox
+    }
 
-          <div class="footer">
-            Willow Creek Farm • Fresh Organic Harvest to Table
-          </div>
-        </body>
-      </html>
-    `);
-    printWindow.document.close();
-    printWindow.focus();
-    setTimeout(() => {
-      printWindow.print();
-    }, 250);
+    // Fallback: copy to clipboard
+    handleCopyRecipe(recipe);
   };
 
   const activeRecipe = recipes[activeRecipeTab] || recipes[0];
