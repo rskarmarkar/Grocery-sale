@@ -1,46 +1,74 @@
 # 🌾 Willow Farm Stand
 
-**A modern storefront for a small farm to sell produce online — no marketplace fees, no middleman.**
+A class project prototype: a simple online storefront where a small farm could sell produce directly to customers, without listing on a marketplace app.
 
-Willow Farm Stand is a lightweight ordering platform built for direct-from-farm sales. Shoppers browse what's fresh, add it to a running cart, and check out with a pickup or delivery request. Behind the scenes, the farmer gets a real dashboard to manage the sale list, track incoming orders, and watch inventory update automatically as things sell — all without spreadsheets, group texts, or a third-party marketplace taking a cut.
+**Live site:** https://grocerysale.vercel.app
+
+## What this is
+
+Willow Farm Stand lets a shopper browse a farm's available produce, put items in a cart, and submit an order for pickup or delivery. On the other side, the farmer has a dashboard to add and edit what's for sale, see incoming orders, and track stock — all sharing the same live data, so when something sells out, the shopper-facing page updates right away.
+
+This is a prototype built to explore an idea, not a finished commercial product. See "What's unfinished" below for what's still missing.
 
 ## Who it's for
 
-- **Small farms & farm stands** who want to take orders online instead of over the phone or via a sign-up sheet.
-- **CSA-style or pop-up sellers** who need a simple way to publish "what's available this week" and stop selling items once they're gone.
-- **Shoppers** who want a fast, no-account-needed way to see what's fresh and place an order for pickup or delivery.
+This project is a portfolio/coursework piece meant to demonstrate a full, working shopping flow — from browsing to checkout to order management — built from scratch. It's shared here for classmates, instructors, and anyone (including potential employers) interested in seeing the code and how it works.
 
-## What it does
+## Try it yourself: step by step
 
-### 🛒 For shoppers — the Market
-- Browse the day's harvest as photo cards with price, unit (lb, bunch, dozen, etc.), and freshness notes like *"Picked Today"* or *"Farmer's Favorite."*
-- Search and filter by category — Vegetables, Fruits, Herbs, Roots, Pantry & Eggs.
-- Add items to a cart that persists in the browser, so a shopper's order survives a page refresh.
-- See a live running total as items are added or adjusted.
-- Check out with name, phone, and either a pickup time or a delivery address.
-- Get an instant order confirmation with a summary of what was ordered.
-- Sold-out items are automatically hidden from checkout the moment stock hits zero — no overselling.
+**As a shopper:**
+1. Go to the [live site](https://grocerysale.vercel.app). You'll land on the "Produce Market" view.
+2. Browse the produce cards, or use the category filter (Vegetables, Fruits, Herbs, Roots, Pantry & Eggs) to narrow things down.
+3. Click a card to add it to your cart. Adjust quantity from the cart drawer (the cart icon, usually top right).
+4. Optional: with items in your cart, open "Farm Basket Recipes" from the cart drawer to get recipe ideas built around what you picked.
+5. When ready, fill in your name, phone number, and either a pickup time or a delivery address, then submit the order.
+6. You'll see an order confirmation summarizing what you ordered. Nothing is actually charged — this is a request, not a paid checkout (see below).
 
-### 🚜 For the farmer — the Dashboard
-- **Sale List** — add, edit, and remove produce listings, set prices and stock levels, mark items organic, and quick-restock with one tap.
-- **Orders** — see every incoming order, filter by status, and move orders through a fulfillment pipeline: *New → Packing → Ready → Completed* (or cancel).
-- **Inventory at a glance** — live stats on total listings, units in stock, low-stock warnings, sold-out counts, total orders, and total revenue.
-- Every sale automatically deducts from inventory in real time — no manual reconciliation needed.
+**As the farmer:**
+1. Click "Farmer Manager" in the header to switch views.
+2. **Produce Sale List** tab — add a new item, edit price/stock/description, or mark something organic. There's a quick-restock option for items running low.
+3. **Orders** tab — see every order that's come in and move it through a status pipeline: New → Packing → Ready → Completed (or cancel it).
+4. **Inventory** tab — see totals at a glance: how much stock is out, what's low or sold out, how many orders have come in, and total revenue.
 
-## How it works
+Anything a shopper does (like buying the last of an item) shows up immediately in the farmer's view, and anything the farmer changes (like a new price) shows up immediately for shoppers.
 
-The storefront and dashboard are two views of the same live catalog: when a shopper places an order, the farmer's inventory and stats update immediately, and when the farmer changes a price or pulls a sold-out item, the market view reflects it right away. Orders and inventory are persisted centrally, so the farmer isn't relying on a spreadsheet or a shopper's memory of what they asked for.
+## How it works, in plain language
 
-## Getting started
+The site is one shared list of produce and orders that both views (shopper and farmer) read from and write to, so there's no delay or manual syncing between them. When you check out, the site checks that there's still enough stock, subtracts what you bought, and marks an item "sold out" once it hits zero.
+
+### The AI part
+
+The "Farm Basket Recipes" feature looks at whatever produce is currently in your cart and asks Google's Gemini AI to write three custom recipes built around those specific ingredients — including prep time, steps, and a chef's tip.
+
+**Where it falls short:**
+- If the AI service is slow, unavailable, or returns something unusable, the site quietly falls back to a small set of pre-written recipes instead. You can tell which one you got from a small badge: "AI Farm Chef" (real AI) vs. "Willow Creek Kitchen" (fallback).
+- The AI writes something new every time you click "Get Fresh Ideas," so recipes aren't reviewed by a person — they can occasionally be repetitive, mismatched to the season, or just a little odd.
+- It only knows what's in your cart. It doesn't know what's actually in your kitchen pantry, doesn't account for allergies beyond the dietary filter you pick, and won't catch a factual cooking mistake if the AI makes one.
+
+## What's unfinished
+
+This is a prototype, so a few things are intentionally incomplete:
+
+- **No real payment processing.** Orders are requests only — the farmer would still need to collect payment separately (e.g., cash or card at pickup/delivery).
+- **No login for the farmer dashboard.** Right now, anyone who visits the site can click "Farmer Manager" and see or edit the sale list and orders. A real version would need a password or account system to lock that down.
+- **Shared data, simple storage.** All data (produce and orders) is saved to one shared file rather than a proper database. That's fine for a demo with one visitor at a time, but it isn't built to handle many people using it at once or to scale up.
+- **No email/text notifications.** Orders are visible in the dashboard, but nothing automatically texts or emails the farmer or the customer when an order's status changes.
+
+## Tools used to build this
+
+- **React** + **TypeScript** — the interface
+- **Vite** — the build tool that runs the app during development and bundles it for deployment
+- **Tailwind CSS** — styling
+- **Express** — the backend server that stores produce and orders and talks to the AI
+- **Google Gemini API** — powers the AI recipe suggestions
+- **Vercel** — hosting for the live site
+
+## Running it locally
 
 ```bash
 npm install
-cp .env.example .env   # add your configuration
+cp .env.example .env   # add your own Gemini API key if you want the AI recipes to work
 npm run dev
 ```
 
-The app runs at `http://localhost:3000` — the market view loads by default, with the farmer dashboard accessible from the header.
-
-## Tech stack
-
-Built with React 19, TypeScript, Vite, Tailwind CSS, and an Express backend with a persisted JSON data store — a deliberately small footprint so it's easy to self-host or extend.
+The app runs at `http://localhost:3000`. Without a Gemini API key, the recipe feature still works — it just always uses the pre-written fallback recipes instead of AI-generated ones.
