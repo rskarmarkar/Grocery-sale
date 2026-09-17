@@ -1,5 +1,6 @@
-import { ProduceItem, Order, InventoryStats } from '../types';
+import { ProduceItem, Order, InventoryStats, Recipe, CartItem } from '../types';
 import { INITIAL_PRODUCE } from '../data/initialProduce';
+import { generateFallbackRecipesForCart } from '../data/fallbackRecipes';
 
 // Local storage key for fallback if backend is momentarily offline
 const LOCAL_STORAGE_PRODUCE_KEY = 'farm_local_produce';
@@ -131,4 +132,57 @@ export async function fetchInventoryStats(): Promise<InventoryStats> {
 
 export async function resetDemoDatabase(): Promise<void> {
   await fetch('/api/reset-demo', { method: 'POST' });
+}
+
+export async function fetchRecipesFromCart(
+  cart: CartItem[],
+  dietaryPreference: string = 'All',
+  mealType: string = 'Any'
+): Promise<{ recipes: Recipe[]; source: 'gemini' | 'farm_kitchen' | 'client_fallback' }> {
+  if (!cart || cart.length === 0) {
+    return { recipes: [], source: 'client_fallback' };
+  }
+
+  try {
+    const payload = {
+      cartItems: cart.map(item => ({
+        id: item.produce.id,
+        name: item.produce.name,
+        quantity: item.quantity,
+        unit: item.produce.unit,
+        category: item.produce.category,
+        harvestNote: item.produce.harvestNote
+      })),
+      dietaryPreference,
+      mealType
+    };
+
+    const res = await fetch('/api/recipes/from-cart', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error || `Server responded with ${res.status}`);
+    }
+
+    const data = await res.json();
+    if (Array.isArray(data.recipes) && data.recipes.length > 0) {
+      return {
+        recipes: data.recipes,
+        source: data.source || 'gemini'
+      };
+    }
+  } catch (err) {
+    console.warn('Network or AI error fetching recipes, falling back to farm kitchen catalog', err);
+  }
+
+  // Fallback client-side generation
+  const localRecipes = generateFallbackRecipesForCart(cart, dietaryPreference, mealType);
+  return {
+    recipes: localRecipes,
+    source: 'client_fallback'
+  };
 }

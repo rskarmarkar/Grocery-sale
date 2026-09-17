@@ -2,9 +2,21 @@ import express from 'express';
 import path from 'path';
 import fs from 'fs';
 import { createServer as createViteServer } from 'vite';
+import { GoogleGenAI } from '@google/genai';
 
 const app = express();
 const PORT = 3000;
+
+let genAI: GoogleGenAI | null = null;
+function getGenAI(): GoogleGenAI | null {
+  if (!process.env.GEMINI_API_KEY) {
+    return null;
+  }
+  if (!genAI) {
+    genAI = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+  }
+  return genAI;
+}
 
 app.use(express.json());
 
@@ -20,7 +32,7 @@ if (!fs.existsSync(DATA_DIR)) {
 interface ProduceRecord {
   id: string;
   name: string;
-  category: 'Vegetables' | 'Fruits' | 'Herbs' | 'Roots' | 'Pantry & Eggs';
+  category: 'Vegetable' | 'Fruits' | 'Herbs' | 'Roots' | 'Pantry & Eggs';
   price: number;
   unit: string;
   stock: number;
@@ -69,7 +81,7 @@ const DEFAULT_PRODUCE: ProduceRecord[] = [
   {
     id: 'prod-1',
     name: 'Heirloom Brandywine Tomatoes',
-    category: 'Vegetables',
+    category: 'Vegetable',
     price: 4.50,
     unit: 'lb',
     stock: 35,
@@ -85,7 +97,7 @@ const DEFAULT_PRODUCE: ProduceRecord[] = [
   {
     id: 'prod-2',
     name: 'Tuscan Lacinato Kale',
-    category: 'Vegetables',
+    category: 'Vegetable',
     price: 3.25,
     unit: 'bunch',
     stock: 24,
@@ -133,7 +145,7 @@ const DEFAULT_PRODUCE: ProduceRecord[] = [
   {
     id: 'prod-5',
     name: 'Sweet Bi-Color Butter Corn',
-    category: 'Vegetables',
+    category: 'Vegetable',
     price: 1.25,
     unit: 'ear',
     stock: 50,
@@ -197,7 +209,7 @@ const DEFAULT_PRODUCE: ProduceRecord[] = [
   {
     id: 'prod-9',
     name: 'Sugar Snap Peas',
-    category: 'Vegetables',
+    category: 'Vegetable',
     price: 4.20,
     unit: 'lb',
     stock: 14,
@@ -232,7 +244,14 @@ function loadDatabase(): DatabaseSchema {
   try {
     if (fs.existsSync(DB_FILE)) {
       const data = fs.readFileSync(DB_FILE, 'utf-8');
-      return JSON.parse(data);
+      const parsed: DatabaseSchema = JSON.parse(data);
+      if (parsed.produce) {
+        parsed.produce = parsed.produce.map((p: any) => ({
+          ...p,
+          category: p.category === 'Vegetables' ? 'Vegetable' : p.category
+        }));
+      }
+      return parsed;
     }
   } catch (e) {
     console.error('Error reading database file, using fallback', e);
@@ -522,6 +541,278 @@ app.post('/api/reset-demo', (req, res) => {
   };
   saveDatabase(db);
   res.json({ success: true, message: 'Database reset to harvest seed state' });
+});
+
+// Built-in Farm Recipes Fallback Generator
+interface FarmRecipeTemplate {
+  title: string;
+  matchKeys: string[];
+  prepTime: string;
+  cookTime: string;
+  servings: string;
+  difficulty: 'Easy' | 'Medium' | 'Culinary';
+  description: string;
+  pantryStaples: string[];
+  instructions: string[];
+  chefTip: string;
+  tags: string[];
+}
+
+const BUILTIN_RECIPES: FarmRecipeTemplate[] = [
+  {
+    title: 'Blistered Farm Tomato & Basil Rustic Skillet Pasta',
+    matchKeys: ['tomato', 'basil', 'garlic', 'onion'],
+    prepTime: '10 mins',
+    cookTime: '15 mins',
+    servings: '3-4 servings',
+    difficulty: 'Easy',
+    description: 'Sweet, juicy farm tomatoes burst in hot olive oil with fresh torn basil, garlic, and tender pasta.',
+    pantryStaples: ['8 oz Pasta (penne, linguine, or rigatoni)', '3 tbsp Extra Virgin Olive Oil', '2 cloves Garlic (minced)', 'Salt & coarse black pepper', 'Parmesan cheese to finish'],
+    instructions: [
+      'Bring a large pot of heavily salted water to a rolling boil and cook pasta until al dente.',
+      'Heat olive oil in a wide cast iron or stainless skillet over medium heat. Sauté minced garlic until fragrant (about 60 seconds).',
+      'Tumble in whole or halved farm tomatoes. Cook undisturbed for 4 minutes until skins blister, then gently crush with a wooden spoon to create a silky sauce.',
+      'Transfer drained pasta directly into the sauce along with 2 tablespoons of starchy pasta cooking water.',
+      'Remove from heat, gently fold in torn fresh basil leaves, and season with sea salt, cracked black pepper, and shaved parmesan.'
+    ],
+    chefTip: 'Never chop basil with a knife far in advance—hand-tear it directly over the hot pasta right before serving to keep the aromatics vibrant.',
+    tags: ['Dinner', 'Vegetarian', 'Quick (< 25 min)']
+  },
+  {
+    title: 'Sautéed Garlic Lacinato Kale & Pasture Farm Egg Skillet',
+    matchKeys: ['kale', 'egg', 'onion', 'pepper', 'spinach'],
+    prepTime: '8 mins',
+    cookTime: '10 mins',
+    servings: '2 servings',
+    difficulty: 'Easy',
+    description: 'Crisp-tender ribboned Tuscan kale flash-sautéed with garlic and crowned with sunny farm eggs with golden runny yolks.',
+    pantryStaples: ['2 tbsp Olive oil or butter', '2 cloves Garlic (thinly sliced)', 'Pinch of crushed red pepper flakes', 'Flaky sea salt & coarse black pepper', 'Toasted crusty bread (optional)'],
+    instructions: [
+      'Strip kale leaves from woody stems and slice into 1-inch ribbons. Rinse and dry thoroughly.',
+      'Warm olive oil in a medium skillet over medium heat. Add sliced garlic and red pepper flakes, cooking until barely golden.',
+      'Toss in the kale in batches with tongs until bright green and slightly wilted with charred edges (about 3-4 minutes). Season with salt and plate.',
+      'In the same pan, melt a pat of butter and crack farm eggs. Fry sunny-side up until whites are crisp at edges and yolks remain silky.',
+      'Slide hot eggs onto the kale beds. Break yolks open so they coat the greens as a rich, savory dressing.'
+    ],
+    chefTip: 'Massaging tough winter or hearty summer kale with a drop of olive oil and pinch of salt relaxes the fibers for tender bite.',
+    tags: ['Breakfast & Brunch', 'Vegetarian', 'Gluten-Free', 'Quick (< 25 min)']
+  },
+  {
+    title: 'Sweet Summer Corn & Snap Pea Skillet Succotash',
+    matchKeys: ['corn', 'pea', 'pepper', 'onion', 'basil', 'squash'],
+    prepTime: '12 mins',
+    cookTime: '8 mins',
+    servings: '4 servings',
+    difficulty: 'Easy',
+    description: 'Crisp sweet corn freshly sliced off the cob sautéed with tender sugar snap peas and aromatic herbs.',
+    pantryStaples: ['2 tbsp Butter or olive oil', '1 small Shallot or red onion (diced)', 'Salt & freshly cracked black pepper', 'Zest of 1/2 fresh lemon'],
+    instructions: [
+      'Stand corn upright in a shallow bowl and slice kernels cleanly off the cob with a chef knife.',
+      'Trim snap peas and cut diagonally into bite-sized pieces.',
+      'Melt butter in a skillet over medium-high heat. Sauté diced shallots for 2 minutes until sweet and translucent.',
+      'Add fresh sweet corn and snap peas. Cook briskly for 4-5 minutes, allowing light caramelization while keeping the crisp pop.',
+      'Stir in lemon zest, fresh herbs, sea salt, and black pepper. Serve warm straight from the pan.'
+    ],
+    chefTip: 'Use the blunt backside of your knife to scrape the cob after cutting the kernels—this extracts the sweetest corn milk into your pan!',
+    tags: ['Dinner', 'Vegetarian', 'Quick (< 25 min)', 'Gluten-Free']
+  },
+  {
+    title: 'Pan-Seared Summer Squash with Herb & Lemon Vinaigrette',
+    matchKeys: ['squash', 'zucchini', 'mint', 'herb', 'pepper'],
+    prepTime: '10 mins',
+    cookTime: '10 mins',
+    servings: '3-4 servings',
+    difficulty: 'Easy',
+    description: 'Tender caramelized squash disks dressed warm in a bright lemon-mint vinaigrette with garden herbs.',
+    pantryStaples: ['3 tbsp Extra virgin olive oil', '1 tbsp Lemon juice', '1/2 tsp Honey', 'Coarse sea salt & black pepper', 'Crumbled goat or feta cheese (optional)'],
+    instructions: [
+      'Slice squash into 1/3-inch rounds on a slight diagonal.',
+      'Whisk lemon juice, olive oil, honey, salt, and pepper in a small bowl until emulsified.',
+      'Heat 1 tbsp oil in a skillet or grill pan over medium-high heat. Sear squash in a single layer for 3-4 minutes per side until nicely browned.',
+      'Transfer browned squash to a serving platter and spoon vinaigrette over the hot slices immediately.',
+      'Scatter fresh mint, torn herbs, and crumbled cheese over top before serving.'
+    ],
+    chefTip: 'Keep the pan hot and avoid crowding so the squash caramelizes quickly instead of steaming and turning watery.',
+    tags: ['Lunch / Light Salad', 'Vegetarian', 'Vegan', 'Gluten-Free']
+  },
+  {
+    title: 'Sweet Farm Strawberry & Mint Ricotta Toast',
+    matchKeys: ['strawberr', 'mint', 'honey', 'egg', 'herb'],
+    prepTime: '10 mins',
+    cookTime: '5 mins',
+    servings: '2-4 servings',
+    difficulty: 'Easy',
+    description: 'Fresh sliced strawberries tossed with mint and honey spooned over cool whipped ricotta on warm toasted sourdough.',
+    pantryStaples: ['4 slices Artisan sourdough or brioche bread', '1 cup Whole-milk ricotta cheese', '2 tbsp Honey or maple syrup', 'Flaky sea salt & cracked black pepper'],
+    instructions: [
+      'Hull and slice farm strawberries into quarters. Gently toss with torn mint leaves and 1 tablespoon of honey in a small bowl.',
+      'Toast sourdough slices in a toaster or lightly fry in butter until golden and crunchy.',
+      'Whisk ricotta in a small bowl with a pinch of salt until smooth and spreadable.',
+      'Spread a generous layer of creamy ricotta over each warm toast slice.',
+      'Top with marinated strawberries, drizzle with remaining honey, and finish with a tiny pinch of flaky sea salt and cracked black pepper.'
+    ],
+    chefTip: 'Strawberries picked at room temperature are naturally sweeter and release more juice than cold refrigerated berries.',
+    tags: ['Breakfast & Brunch', 'Vegetarian', 'Quick (< 25 min)']
+  },
+  {
+    title: 'Herb-Roasted Rainbow Roots with Sweet Maple Glaze',
+    matchKeys: ['carrot', 'radish', 'potato', 'beet', 'root', 'onion'],
+    prepTime: '12 mins',
+    cookTime: '25 mins',
+    servings: '4 servings',
+    difficulty: 'Easy',
+    description: 'Crispy-sweet roasted carrots and root vegetables tossed with garden rosemary, thyme, and maple drizzle.',
+    pantryStaples: ['2 tbsp Olive oil', '1 tbsp Pure maple syrup', '1 tsp Coarse sea salt', 'Black pepper', 'Fresh thyme or rosemary sprigs'],
+    instructions: [
+      'Preheat oven to 400°F (200°C). Scrub farm roots clean and cut into uniform 2-inch spears.',
+      'Toss vegetables on a rimmed sheet pan with olive oil, maple syrup, salt, and fresh herbs.',
+      'Arrange in a single layer with space between pieces so the edges can crisp.',
+      'Roast for 22-25 minutes, tossing once halfway through, until fork-tender with caramelized blistered edges.',
+      'Taste and finish with an extra sprinkle of coarse sea salt before serving.'
+    ],
+    chefTip: 'Roasting at 400°F concentrates the natural sugars in root vegetables without burning the delicate maple glaze.',
+    tags: ['Dinner', 'Vegan', 'Vegetarian', 'Gluten-Free']
+  }
+];
+
+function generateFallbackRecipes(cartItems: any[], dietaryPreference?: string, mealType?: string) {
+  const itemNames = cartItems.map(item => String(item.name || '').toLowerCase());
+
+  // Score each recipe based on cart matching
+  const scored = BUILTIN_RECIPES.map((recipe, index) => {
+    let score = 0;
+    const usedCartIngredients: string[] = [];
+
+    cartItems.forEach(item => {
+      const nameLower = String(item.name || '').toLowerCase();
+      const match = recipe.matchKeys.some(key => nameLower.includes(key));
+      if (match) {
+        score += 3;
+        usedCartIngredients.push(item.name);
+      }
+    });
+
+    if (dietaryPreference && dietaryPreference !== 'All') {
+      const matchDiet = recipe.tags.some(t => t.toLowerCase().includes(dietaryPreference.toLowerCase()));
+      if (matchDiet) score += 2;
+    }
+
+    if (mealType && mealType !== 'Any') {
+      const matchMeal = recipe.tags.some(t => t.toLowerCase().includes(mealType.toLowerCase()));
+      if (matchMeal) score += 2;
+    }
+
+    return {
+      id: `farm-rec-${index + 1}`,
+      title: recipe.title,
+      prepTime: recipe.prepTime,
+      cookTime: recipe.cookTime,
+      servings: recipe.servings,
+      difficulty: recipe.difficulty,
+      description: recipe.description,
+      usedCartIngredients: usedCartIngredients.length > 0 ? Array.from(new Set(usedCartIngredients)) : [cartItems[0]?.name || 'Farm Fresh Produce'],
+      pantryStaplesNeeded: recipe.pantryStaples,
+      instructions: recipe.instructions,
+      chefTip: recipe.chefTip,
+      tags: recipe.tags,
+      score
+    };
+  });
+
+  // Sort by score descending
+  scored.sort((a, b) => b.score - a.score);
+  return scored.slice(0, 3).map(({ score, ...recipe }) => recipe);
+}
+
+// Generate Recipes from Cart Produce (Gemini AI + Curated Fallback)
+app.post('/api/recipes/from-cart', async (req, res) => {
+  const { cartItems, dietaryPreference, mealType } = req.body;
+
+  if (!Array.isArray(cartItems) || cartItems.length === 0) {
+    res.status(400).json({ error: 'Please select at least one produce item in your cart to generate recipes.' });
+    return;
+  }
+
+  const ai = getGenAI();
+
+  if (ai) {
+    try {
+      const produceSummary = cartItems
+        .map((item: any) => `- ${item.name} (${item.quantity} ${item.unit || 'unit'}${item.category ? `, Category: ${item.category}` : ''}${item.harvestNote ? `, Note: ${item.harvestNote}` : ''})`)
+        .join('\n');
+
+      const prompt = `You are the resident culinary chef at Willow Creek Organic Farm. A customer has selected the following freshly harvested produce items in their farm cart:
+${produceSummary}
+
+${dietaryPreference && dietaryPreference !== 'All' ? `Dietary Preference: ${dietaryPreference}` : ''}
+${mealType && mealType !== 'Any' ? `Meal Type: ${mealType}` : ''}
+
+Create 3 creative, seasonal, farm-to-table recipes that make these specific cart produce items the heroes of the dish.
+Return a valid JSON array of 3 recipe objects with this exact structure:
+[
+  {
+    "id": "recipe-1",
+    "title": "Creative Dish Name",
+    "prepTime": "10 mins",
+    "cookTime": "15 mins",
+    "servings": "3-4 servings",
+    "difficulty": "Easy",
+    "description": "Appetizing 1-2 sentence description of the dish highlighting the farm produce flavor.",
+    "usedCartIngredients": ["Exact produce name from cart", "Another produce name from cart"],
+    "pantryStaplesNeeded": ["Olive oil", "Garlic", "Kosher salt", "Pasta or rice"],
+    "instructions": [
+      "Step 1 with clear action",
+      "Step 2 with clear action",
+      "Step 3 with clear action",
+      "Step 4 with clear action"
+    ],
+    "chefTip": "A specific practical cooking tip from a farmer/chef on handling or cooking these fresh ingredients.",
+    "tags": ["Dinner", "Vegetarian", "Quick (< 25 min)"]
+  }
+]
+
+Requirements:
+- Only return the JSON array, no markdown formatting backticks if possible, or clean standard JSON.
+- Every recipe MUST use at least one (preferably multiple) of the customer's cart produce items.
+- Keep pantry staples realistic (salt, pepper, oil, butter, garlic, pasta, rice, flour, simple seasonings).
+- Instructions should be easy to follow for home cooks.`;
+
+      const aiResponse = await ai.models.generateContent({
+        model: 'gemini-3.8-flash',
+        contents: prompt,
+        config: {
+          responseMimeType: 'application/json'
+        }
+      });
+
+      const responseText = aiResponse.text;
+      if (responseText) {
+        try {
+          const parsed = JSON.parse(responseText);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            res.json({
+              recipes: parsed,
+              source: 'gemini',
+              cartIngredientsCount: cartItems.length
+            });
+            return;
+          }
+        } catch (parseErr) {
+          console.warn('Failed to parse Gemini recipe JSON, using fallback', parseErr);
+        }
+      }
+    } catch (genErr) {
+      console.warn('Gemini API recipe generation error, using fallback', genErr);
+    }
+  }
+
+  // Fallback to our curated farm recipe matching engine
+  const fallback = generateFallbackRecipes(cartItems, dietaryPreference, mealType);
+  res.json({
+    recipes: fallback,
+    source: 'farm_kitchen',
+    cartIngredientsCount: cartItems.length
+  });
 });
 
 // Start server with Vite middleware

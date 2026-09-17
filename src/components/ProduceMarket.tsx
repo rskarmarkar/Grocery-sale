@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { 
   Sprout, Sparkles, MapPin, Clock, ShieldCheck, ShoppingBag, 
-  ArrowRight, Phone, Heart, CheckCircle2, Leaf
+  ArrowRight, Phone, Heart, CheckCircle2, Leaf, ChefHat, Utensils
 } from 'lucide-react';
 import { ProduceItem, CartItem } from '../types';
 import { ProduceCard } from './ProduceCard';
@@ -13,16 +13,18 @@ interface ProduceMarketProps {
   onAddToCart: (produce: ProduceItem, quantity: number) => void;
   onUpdateCartQuantity: (produceId: string, delta: number) => void;
   onOpenCart: () => void;
+  onOpenRecipes: () => void;
 }
 
-const CATEGORIES = ['All', 'Vegetables', 'Fruits', 'Herbs', 'Roots', 'Pantry & Eggs'];
+const CATEGORIES = ['All', 'Vegetable', 'Fruits', 'Herbs', 'Roots', 'Pantry & Eggs'];
 
 export const ProduceMarket: React.FC<ProduceMarketProps> = ({
   produceList,
   cart,
   onAddToCart,
   onUpdateCartQuantity,
-  onOpenCart
+  onOpenCart,
+  onOpenRecipes
 }) => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
@@ -34,8 +36,10 @@ export const ProduceMarket: React.FC<ProduceMarketProps> = ({
 
   // Filter produce
   const filteredProduce = produceList.filter((item) => {
-    if (selectedCategory !== 'All' && item.category !== selectedCategory) {
-      return false;
+    if (selectedCategory !== 'All') {
+      const matchCategory = item.category === selectedCategory || 
+        (selectedCategory === 'Vegetable' && (item.category as string) === 'Vegetables');
+      if (!matchCategory) return false;
     }
     if (inStockOnly && item.stock <= 0) {
       return false;
@@ -118,6 +122,38 @@ export const ProduceMarket: React.FC<ProduceMarketProps> = ({
         totalCount={filteredProduce.length}
       />
 
+      {/* Cart Recipe Inspiration Banner */}
+      {totalCartItems > 0 && (
+        <div className="mb-6 p-4 rounded-2xl bg-radial from-[#edf6f0] to-[#e4eee7] border border-[#c4e0ce] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-2xs">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-[#2d4734] text-white flex items-center justify-center shrink-0 shadow-2xs">
+              <ChefHat className="w-5 h-5 text-[#9dd6b1]" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="font-display font-bold text-sm text-[#1e3c27]">
+                  Farm Recipes Ready for Your Cart
+                </span>
+                <span className="px-2 py-0.5 rounded-full bg-[#2d4734] text-white text-[10px] font-bold">
+                  {cart.length} {cart.length === 1 ? 'produce item' : 'produce items'}
+                </span>
+              </div>
+              <p className="text-xs text-[#486350] leading-snug">
+                Discover personalized farm-to-table dishes featuring {cart.slice(0, 2).map(c => c.produce.name).join(', ')}{cart.length > 2 ? ` and ${cart.length - 2} more` : ''}.
+              </p>
+            </div>
+          </div>
+          <button
+            id="market-banner-open-recipes-btn"
+            onClick={onOpenRecipes}
+            className="px-4 py-2 rounded-xl bg-[#2d4734] hover:bg-[#203627] text-white font-bold text-xs flex items-center gap-1.5 shadow-2xs transition-all shrink-0"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-[#9dd6b1]" />
+            <span>Get Recipes from Cart</span>
+          </button>
+        </div>
+      )}
+
       {/* Produce Grid */}
       {filteredProduce.length === 0 ? (
         <div className="bg-[#fffefc] rounded-2xl border border-[#dfd7c9] p-12 text-center my-6">
@@ -181,14 +217,26 @@ export const ProduceMarket: React.FC<ProduceMarketProps> = ({
               </div>
             </div>
 
-            <button
-              id="sticky-checkout-btn"
-              onClick={onOpenCart}
-              className="px-5 py-2.5 rounded-xl bg-white hover:bg-[#f2efe9] active:scale-95 text-[#2d4734] font-bold text-xs sm:text-sm flex items-center gap-2 transition-all shadow-sm"
-            >
-              <span>View Cart & Place Order</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
+            <div className="flex items-center gap-2 sm:gap-3">
+              <button
+                id="sticky-recipes-btn"
+                onClick={onOpenRecipes}
+                className="px-3.5 sm:px-4 py-2.5 rounded-xl bg-[#3f6349] hover:bg-[#4d7858] active:scale-95 text-white font-bold text-xs sm:text-sm flex items-center gap-1.5 transition-all shadow-sm border border-[#52805f]"
+                title="Get recipes from your selected produce"
+              >
+                <ChefHat className="w-4 h-4 text-[#9dd6b1]" />
+                <span>Recipes</span>
+              </button>
+
+              <button
+                id="sticky-checkout-btn"
+                onClick={onOpenCart}
+                className="px-4 sm:px-5 py-2.5 rounded-xl bg-white hover:bg-[#f2efe9] active:scale-95 text-[#2d4734] font-bold text-xs sm:text-sm flex items-center gap-2 transition-all shadow-sm"
+              >
+                <span>View Cart & Order</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
           </div>
         </div>
       )}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sprout, ShoppingBag, LayoutDashboard, Store, CloudCheck, Sparkles } from 'lucide-react';
+import { Sprout, ShoppingBag, LayoutDashboard, Store, CloudCheck, Sparkles, ChefHat } from 'lucide-react';
 import { ViewMode, CartItem } from '../types';
 
 interface HeaderProps {
@@ -7,13 +7,15 @@ interface HeaderProps {
   onViewChange: (mode: ViewMode) => void;
   cart: CartItem[];
   onOpenCart: () => void;
+  onOpenRecipes?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
   viewMode,
   onViewChange,
   cart,
-  onOpenCart
+  onOpenCart,
+  onOpenRecipes
 }) => {
   const totalCartItems = cart.reduce((sum, item) => sum + item.quantity, 0);
   const cartSubtotal = cart.reduce((sum, item) => sum + item.produce.price * item.quantity, 0);
@@ -98,6 +100,28 @@ export const Header: React.FC<HeaderProps> = ({
               </span>
             </button>
           </div>
+
+          {/* Recipes from Cart Button */}
+          {onOpenRecipes && (
+            <button
+              id="header-open-recipes-btn"
+              onClick={onOpenRecipes}
+              className={`flex items-center gap-1.5 px-3 sm:px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 border ${
+                totalCartItems > 0
+                  ? 'bg-[#eaf4ed] text-[#22482c] border-[#bddcc4] hover:bg-[#d8edd9] shadow-2xs'
+                  : 'bg-[#faf8f4] text-[#606d63] border-[#e2dcce] hover:text-[#242b26]'
+              }`}
+              title={totalCartItems > 0 ? `Get recipes from ${totalCartItems} cart items` : 'View farm recipes'}
+            >
+              <ChefHat className="w-4 h-4 text-[#2d4734]" />
+              <span className="hidden sm:inline">Recipes</span>
+              {totalCartItems > 0 && (
+                <span className="px-1.5 py-0.5 rounded-full bg-[#2d4734] text-white text-[10px] font-bold">
+                  {cart.length}
+                </span>
+              )}
+            </button>
+          )}
 
           {/* Instant Cart Button */}
           <button

@@ -51,7 +51,7 @@ export const FarmerDashboard: React.FC<FarmerDashboardProps> = ({
 
   // Form Fields for Add / Edit Produce
   const [formName, setFormName] = useState('');
-  const [formCategory, setFormCategory] = useState<ProduceItem['category']>('Vegetables');
+  const [formCategory, setFormCategory] = useState<ProduceItem['category']>('Vegetable');
   const [formPrice, setFormPrice] = useState('3.50');
   const [formUnit, setFormUnit] = useState('lb');
   const [formStock, setFormStock] = useState('25');
@@ -64,7 +64,7 @@ export const FarmerDashboard: React.FC<FarmerDashboardProps> = ({
   const openAddModal = () => {
     setEditingProduce(null);
     setFormName('');
-    setFormCategory('Vegetables');
+    setFormCategory('Vegetable');
     setFormPrice('3.50');
     setFormUnit('lb');
     setFormStock('30');
@@ -698,7 +698,7 @@ export const FarmerDashboard: React.FC<FarmerDashboardProps> = ({
                     onChange={(e) => setFormCategory(e.target.value as any)}
                     className="w-full px-3.5 py-2 rounded-xl bg-[#faf8f4] border border-[#d6cec0] text-sm text-[#242b26] focus:outline-none focus:ring-2 focus:ring-[#2d4734]"
                   >
-                    <option value="Vegetables">Vegetables</option>
+                    <option value="Vegetable">Vegetable</option>
                     <option value="Fruits">Fruits</option>
                     <option value="Herbs">Herbs</option>
                     <option value="Roots">Roots</option>

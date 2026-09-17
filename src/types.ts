@@ -1,7 +1,7 @@
 export interface ProduceItem {
   id: string;
   name: string;
-  category: 'Vegetables' | 'Fruits' | 'Herbs' | 'Roots' | 'Pantry & Eggs';
+  category: 'Vegetable' | 'Fruits' | 'Herbs' | 'Roots' | 'Pantry & Eggs';
   price: number;
   unit: string; // 'lb', 'bunch', 'pint', 'dozen', 'head', 'bag'
   stock: number;
@@ -58,3 +58,18 @@ export interface InventoryStats {
 }
 
 export type ViewMode = 'market' | 'farmer';
+
+export interface Recipe {
+  id: string;
+  title: string;
+  prepTime: string;
+  cookTime: string;
+  servings: string;
+  difficulty: 'Easy' | 'Medium' | 'Culinary';
+  description: string;
+  usedCartIngredients: string[];
+  pantryStaplesNeeded: string[];
+  instructions: string[];
+  chefTip?: string;
+  tags?: string[];
+}

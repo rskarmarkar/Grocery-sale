@@ -10,6 +10,7 @@ import { ProduceMarket } from './components/ProduceMarket';
 import { FarmerDashboard } from './components/FarmerDashboard';
 import { CartDrawer } from './components/CartDrawer';
 import { OrderConfirmationModal } from './components/OrderConfirmationModal';
+import { RecipeModal } from './components/RecipeModal';
 
 const CART_STORAGE_KEY = 'willow_farm_cart_items';
 
@@ -37,6 +38,7 @@ export default function App() {
   });
 
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isRecipeModalOpen, setIsRecipeModalOpen] = useState(false);
   const [confirmedOrder, setConfirmedOrder] = useState<Order | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -242,6 +244,7 @@ export default function App() {
         onViewChange={setViewMode}
         cart={cart}
         onOpenCart={() => setIsCartOpen(true)}
+        onOpenRecipes={() => setIsRecipeModalOpen(true)}
       />
 
       {/* View router */}
@@ -253,6 +256,7 @@ export default function App() {
             onAddToCart={handleAddToCart}
             onUpdateCartQuantity={handleUpdateCartQuantity}
             onOpenCart={() => setIsCartOpen(true)}
+            onOpenRecipes={() => setIsRecipeModalOpen(true)}
           />
         ) : (
           <FarmerDashboard
@@ -277,6 +281,21 @@ export default function App() {
         onRemoveItem={handleRemoveCartItem}
         onClearCart={handleClearCart}
         onOrderPlaced={handleOrderPlaced}
+        onOpenRecipes={() => {
+          setIsCartOpen(false);
+          setIsRecipeModalOpen(true);
+        }}
+      />
+
+      {/* Farm Basket Recipe Modal */}
+      <RecipeModal
+        isOpen={isRecipeModalOpen}
+        onClose={() => setIsRecipeModalOpen(false)}
+        cart={cart}
+        onOpenCart={() => {
+          setIsRecipeModalOpen(false);
+          setIsCartOpen(true);
+        }}
       />
 
       {/* Order Confirmation Modal */}

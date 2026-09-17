@@ -1,6 +1,6 @@
 {
   "name": "Farm Stand Produce & Orders",
-  "description": "Organic farm sale list and produce ordering system with instant cart total and cloud inventory management.",
+  "description": "Organic farm sale list and produce ordering system with instant cart total, cloud inventory management, and farm-to-table recipe suggestions.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

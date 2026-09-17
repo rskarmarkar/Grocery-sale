@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { 
   X, ShoppingBag, Trash2, Plus, Minus, ArrowRight, 
-  MapPin, Clock, ShieldCheck, Truck, Store, AlertCircle, CheckCircle2
+  MapPin, Clock, ShieldCheck, Truck, Store, AlertCircle, CheckCircle2,
+  ChefHat, Sparkles, Utensils
 } from 'lucide-react';
 import { CartItem, Order, ProduceItem } from '../types';
 
@@ -13,6 +14,7 @@ interface CartDrawerProps {
   onRemoveItem: (produceId: string) => void;
   onClearCart: () => void;
   onOrderPlaced: (order: Order, updatedProduce: ProduceItem[]) => void;
+  onOpenRecipes?: () => void;
 }
 
 export const CartDrawer: React.FC<CartDrawerProps> = ({
@@ -22,7 +24,8 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
   onUpdateQuantity,
   onRemoveItem,
   onClearCart,
-  onOrderPlaced
+  onOrderPlaced,
+  onOpenRecipes
 }) => {
   // Checkout form states
   const [step, setStep] = useState<'review' | 'checkout'>('review');
@@ -200,6 +203,37 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                     </button>
                   </div>
                 </div>
+
+                {/* Recipe Inspiration from Selected Produce */}
+                {onOpenRecipes && (
+                  <div className="bg-radial from-[#edf6f0] to-[#e4eee7] p-3.5 rounded-xl border border-[#c4ded0] flex items-center justify-between gap-3 shadow-2xs">
+                    <div className="flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-lg bg-[#2d4734] text-white flex items-center justify-center shrink-0 shadow-2xs">
+                        <ChefHat className="w-4 h-4 text-[#9dd6b1]" />
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-xs font-bold text-[#1e3c27]">Farm Basket Recipes</span>
+                          <span className="px-1.5 py-0.2 bg-[#2d4734] text-white rounded text-[9px] font-bold">
+                            {cart.length} {cart.length === 1 ? 'item' : 'items'}
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-[#4d6655] leading-tight">
+                          Custom recipes tailored from your cart ingredients.
+                        </p>
+                      </div>
+                    </div>
+                    <button
+                      id="drawer-open-recipes-btn"
+                      type="button"
+                      onClick={onOpenRecipes}
+                      className="px-3 py-1.5 rounded-lg bg-[#2d4734] hover:bg-[#203627] text-white text-xs font-bold shrink-0 flex items-center gap-1.5 shadow-2xs transition-all active:scale-95"
+                    >
+                      <Sparkles className="w-3.5 h-3.5 text-[#9dd6b1]" />
+                      <span>Recipes</span>
+                    </button>
+                  </div>
+                )}
 
                 {/* Produce Line Items */}
                 <div className="space-y-3">
@@ -462,14 +496,27 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
 
               {/* Action Button */}
               {step === 'review' ? (
-                <button
-                  id="proceed-to-checkout-btn"
-                  onClick={() => setStep('checkout')}
-                  className="w-full py-3 px-4 rounded-xl bg-[#2d4734] hover:bg-[#233829] active:scale-98 text-white font-bold text-sm transition-all duration-200 flex items-center justify-center gap-2 shadow-sm border border-[#3b5d44]"
-                >
-                  <span>Proceed to Checkout</span>
-                  <ArrowRight className="w-4 h-4" />
-                </button>
+                <div className="space-y-2">
+                  <button
+                    id="proceed-to-checkout-btn"
+                    onClick={() => setStep('checkout')}
+                    className="w-full py-3 px-4 rounded-xl bg-[#2d4734] hover:bg-[#233829] active:scale-98 text-white font-bold text-sm transition-all duration-200 flex items-center justify-center gap-2 shadow-sm border border-[#3b5d44]"
+                  >
+                    <span>Proceed to Checkout</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                  {onOpenRecipes && (
+                    <button
+                      id="drawer-footer-recipes-btn"
+                      type="button"
+                      onClick={onOpenRecipes}
+                      className="w-full py-2.5 px-4 rounded-xl bg-[#faf8f4] hover:bg-[#efe9dd] border border-[#d6cec0] text-[#2d4734] font-bold text-xs transition-all duration-200 flex items-center justify-center gap-2"
+                    >
+                      <ChefHat className="w-4 h-4 text-[#2d4734]" />
+                      <span>Get Recipes from Selected Produce ({cart.length})</span>
+                    </button>
+                  )}
+                </div>
               ) : (
                 <div className="flex gap-2.5">
                   <button

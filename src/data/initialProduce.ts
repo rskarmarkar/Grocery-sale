@@ -4,7 +4,7 @@ export const INITIAL_PRODUCE: ProduceItem[] = [
   {
     id: 'prod-1',
     name: 'Heirloom Brandywine Tomatoes',
-    category: 'Vegetables',
+    category: 'Vegetable',
     price: 4.50,
     unit: 'lb',
     stock: 35,
@@ -20,7 +20,7 @@ export const INITIAL_PRODUCE: ProduceItem[] = [
   {
     id: 'prod-2',
     name: 'Tuscan Lacinato Kale',
-    category: 'Vegetables',
+    category: 'Vegetable',
     price: 3.25,
     unit: 'bunch',
     stock: 24,
@@ -68,7 +68,7 @@ export const INITIAL_PRODUCE: ProduceItem[] = [
   {
     id: 'prod-5',
     name: 'Sweet Bi-Color Butter Corn',
-    category: 'Vegetables',
+    category: 'Vegetable',
     price: 1.25,
     unit: 'ear',
     stock: 50,
@@ -132,7 +132,7 @@ export const INITIAL_PRODUCE: ProduceItem[] = [
   {
     id: 'prod-9',
     name: 'Sugar Snap Peas',
-    category: 'Vegetables',
+    category: 'Vegetable',
     price: 4.20,
     unit: 'lb',
     stock: 14,
