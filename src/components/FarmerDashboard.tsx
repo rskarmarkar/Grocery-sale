@@ -25,9 +25,9 @@ const PHOTO_PRESETS = [
   { label: 'Apples', url: 'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=800&auto=format&fit=crop&q=80' },
   { label: 'Carrots', url: 'https://images.unsplash.com/photo-1598170845058-32b9d6a5c717?w=800&auto=format&fit=crop&q=80' },
   { label: 'Corn', url: 'https://images.unsplash.com/photo-1551754655-cd27e38d2076?w=800&auto=format&fit=crop&q=80' },
-  { label: 'Basil / Herbs', url: 'https://images.unsplash.com/photo-1608686207856-001b95cf60ca?w=800&auto=format&fit=crop&q=80' },
-  { label: 'Farm Eggs', url: 'https://images.unsplash.com/photo-1516467508483-a7212febe31a?w=800&auto=format&fit=crop&q=80' },
-  { label: 'Honey', url: 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=800&auto=format&fit=crop&q=80' },
+  { label: 'Basil / Herbs', url: 'https://images.unsplash.com/photo-1776257217010-1c2e92207f2a?w=800&auto=format&fit=crop&q=80' },
+  { label: 'Farm Eggs', url: 'https://images.unsplash.com/photo-1660224286794-fc173fa9295c?w=800&auto=format&fit=crop&q=80' },
+  { label: 'Honey', url: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=800&auto=format&fit=crop&q=80' },
   { label: 'Berries', url: 'https://images.unsplash.com/photo-1464965911861-746a04b4bca6?w=800&auto=format&fit=crop&q=80' },
   { label: 'Snap Peas', url: 'https://images.unsplash.com/photo-1592394533824-9440e5d68530?w=800&auto=format&fit=crop&q=80' },
 ];
