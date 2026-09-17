@@ -1,8 +1,52 @@
 @import "tailwindcss";
 
+/*
+ * Design tokens translated from misfitsmarket.com's design system.
+ * See docs/design-system.md for the extraction method and full rationale.
+ */
 @theme {
-  --font-serif: "Fraunces", Georgia, serif;
+  --font-heading: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
   --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+
+  /* Color */
+  --color-cream: #f2ebd1;
+  --color-pale: #fff9ea;
+  --color-ink: #2a2a27;
+  --color-muted: #5c5c54;
+  --color-border: #ddd2b6;
+  --color-border-soft: #ece4d1;
+
+  --color-sprout-900: #1c3222;
+  --color-sprout-700: #20612f;
+  --color-sprout-600: #2e7d43;
+  --color-mint: #b9e6c4;
+
+  --color-honey: #f1c34a;
+  --color-berry: #b32274;
+  --color-clay: #8a5d3b;
+  --color-terracotta: #c47d4e;
+
+  --color-error: #d9291f;
+  --color-error-soft: #fceeed;
+  --color-warning: #b36729;
+  --color-warning-soft: #fff4eb;
+  --color-success: #2c613c;
+  --color-success-soft: #edf7f0;
+
+  /* Radius (overrides Tailwind's built-in rounded-* scale app-wide) */
+  --radius-sm: 4px;
+  --radius-md: 5px;
+  --radius-lg: 10px;
+  --radius-xl: 15px;
+  --radius-2xl: 20px;
+  --radius-3xl: 20px;
+
+  /* Shadow (overrides Tailwind's built-in shadow-* scale app-wide) */
+  --shadow-xs: 0 0 12px rgba(42, 42, 39, 0.06);
+  --shadow-sm: 0 0 18px rgba(42, 42, 39, 0.08);
+  --shadow-md: 0 0 25px rgba(42, 42, 39, 0.1);
+  --shadow-lg: 0 0 32px rgba(42, 42, 39, 0.14);
+  --shadow-xl: 0 0 40px rgba(42, 42, 39, 0.18);
 }
 
 body {
@@ -10,5 +54,6 @@ body {
 }
 
 .font-display {
-  font-family: var(--font-serif);
+  font-family: var(--font-heading);
+  font-weight: 700;
 }

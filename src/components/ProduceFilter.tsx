@@ -23,24 +23,24 @@ export const ProduceFilter: React.FC<ProduceFilterProps> = ({
   totalCount
 }) => {
   return (
-    <div className="bg-[#fffefc] rounded-2xl border border-[#dfd7c9] p-4 sm:p-5 shadow-xs mb-8">
+    <div className="bg-pale rounded-2xl border border-border p-4 sm:p-5 shadow-xs mb-8">
       {/* Top row: Search & Quick In-Stock Toggle */}
-      <div className="flex flex-col sm:flex-row gap-3 sm:items-center justify-between pb-4 border-b border-[#f1ece2]">
+      <div className="flex flex-col sm:flex-row gap-3 sm:items-center justify-between pb-4 border-b border-border-soft">
         {/* Search Input */}
         <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#7d887f]" />
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted" />
           <input
             id="produce-search-input"
             type="text"
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder="Search tomatoes, kale, apples, basil..."
-            className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#faf8f4] border border-[#d8d1c3] text-sm text-[#242b26] placeholder-[#8a958c] focus:outline-none focus:ring-2 focus:ring-[#2d4734] focus:border-transparent transition-all"
+            className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-cream border border-border-soft text-sm text-ink placeholder-border focus:outline-none focus:ring-2 focus:ring-sprout-900 focus:border-transparent transition-all"
           />
           {searchQuery && (
             <button
               onClick={() => onSearchChange('')}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#7d887f] hover:text-[#242b26] font-semibold"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted hover:text-ink font-semibold"
             >
               Clear
             </button>
@@ -59,7 +59,7 @@ export const ProduceFilter: React.FC<ProduceFilterProps> = ({
             />
             <div
               className={`w-9 h-5 rounded-full transition-colors relative ${
-                inStockOnly ? 'bg-[#2d4734]' : 'bg-[#d5cdc0]'
+                inStockOnly ? 'bg-sprout-900' : 'bg-border-soft'
               }`}
             >
               <div
@@ -68,12 +68,12 @@ export const ProduceFilter: React.FC<ProduceFilterProps> = ({
                 }`}
               />
             </div>
-            <span className="text-xs sm:text-sm font-semibold text-[#48534a]">
+            <span className="text-xs sm:text-sm font-semibold text-muted">
               In Stock Only
             </span>
           </label>
 
-          <span className="text-xs text-[#7a867c] font-medium hidden sm:inline">
+          <span className="text-xs text-muted font-medium hidden sm:inline">
             {totalCount} {totalCount === 1 ? 'item' : 'items'} available
           </span>
         </div>
@@ -90,8 +90,8 @@ export const ProduceFilter: React.FC<ProduceFilterProps> = ({
               onClick={() => onSelectCategory(cat)}
               className={`px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-150 whitespace-nowrap shrink-0 flex items-center gap-1.5 border ${
                 isSelected
-                  ? 'bg-[#2d4734] text-white border-[#2d4734] shadow-xs'
-                  : 'bg-[#faf8f4] text-[#556358] border-[#dfd7c9] hover:bg-[#ede7dc] hover:text-[#242b26]'
+                  ? 'bg-sprout-900 text-white border-sprout-900 shadow-xs'
+                  : 'bg-cream text-muted border-border hover:bg-border-soft hover:text-ink'
               }`}
             >
               {cat === 'All' && <Leaf className="w-3.5 h-3.5" />}
