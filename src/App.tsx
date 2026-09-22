@@ -12,8 +12,6 @@ import { CartDrawer } from './components/CartDrawer';
 import { OrderConfirmationModal } from './components/OrderConfirmationModal';
 import { RecipeModal } from './components/RecipeModal';
 
-const CART_STORAGE_KEY = 'willow_farm_cart_items';
-
 // The farmer view only lives at /farmer so it never shows up as a tab
 // customers can click from the market page.
 const viewModeFromPath = (): ViewMode =>
@@ -47,15 +45,8 @@ export default function App() {
     totalRevenue: 0
   });
 
-  // Cart State (stored locally in browser for shopper convenience)
-  const [cart, setCart] = useState<CartItem[]>(() => {
-    try {
-      const saved = localStorage.getItem(CART_STORAGE_KEY);
-      return saved ? JSON.parse(saved) : [];
-    } catch {
-      return [];
-    }
-  });
+  // Cart State (always starts empty on page load, not persisted)
+  const [cart, setCart] = useState<CartItem[]>([]);
 
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isRecipeModalOpen, setIsRecipeModalOpen] = useState(false);
@@ -70,15 +61,6 @@ export default function App() {
       setToastMessage(null);
     }, 3000);
   };
-
-  // Sync cart to local storage
-  useEffect(() => {
-    try {
-      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
-    } catch (e) {
-      console.error('Failed to persist cart', e);
-    }
-  }, [cart]);
 
   // Load cloud data from server
   const loadCloudData = useCallback(async () => {
