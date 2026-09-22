@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sprout, ShoppingBag, LayoutDashboard, Store, CloudCheck, Sparkles, ChefHat } from 'lucide-react';
+import { Sprout, ShoppingBag, Store, CloudCheck, Sparkles, ChefHat } from 'lucide-react';
 import { ViewMode, CartItem } from '../types';
 
 interface HeaderProps {
@@ -70,38 +70,28 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Action Controls */}
         <div className="flex items-center gap-2 sm:gap-4">
-          {/* Mode Switcher Tabs */}
-          <div className="bg-pale p-1 rounded-xl flex items-center border border-border">
+          {/* Mode indicator: customers never see a way into Farmer Manager;
+              the farmer (already on /farmer) gets a way back out. */}
+          {viewMode === 'market' ? (
+            <div className="bg-pale p-1 rounded-xl flex items-center border border-border">
+              <div
+                className="flex items-center gap-1.5 px-2.5 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold bg-sprout-900 text-cream shadow-sm"
+              >
+                <Store className="w-4 h-4" />
+                <span className="hidden sm:inline">Produce Market</span>
+              </div>
+            </div>
+          ) : (
             <button
-              id="view-mode-market-btn"
+              id="view-mode-exit-farmer-btn"
               onClick={() => onViewChange('market')}
-              title="Produce Market"
-              className={`flex items-center gap-1.5 px-2.5 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-200 ${
-                viewMode === 'market'
-                  ? 'bg-sprout-900 text-cream shadow-sm'
-                  : 'text-muted hover:text-ink'
-              }`}
+              title="Exit to Produce Market"
+              className="flex items-center gap-1.5 px-2.5 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold bg-pale border border-border text-muted hover:text-ink transition-all duration-200"
             >
               <Store className="w-4 h-4" />
-              <span className="hidden sm:inline">Produce Market</span>
+              <span className="hidden sm:inline">Exit to Market</span>
             </button>
-            <button
-              id="view-mode-farmer-btn"
-              onClick={() => onViewChange('farmer')}
-              title="Farmer Manager"
-              className={`flex items-center gap-1.5 px-2.5 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-200 ${
-                viewMode === 'farmer'
-                  ? 'bg-clay text-cream shadow-sm'
-                  : 'text-muted hover:text-ink'
-              }`}
-            >
-              <LayoutDashboard className="w-4 h-4" />
-              <span className="hidden sm:inline">Farmer Manager</span>
-              <span className="hidden md:inline text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-white/20 ml-1">
-                Sale List
-              </span>
-            </button>
-          </div>
+          )}
 
           {/* Recipes from Cart Button */}
           {onOpenRecipes && (

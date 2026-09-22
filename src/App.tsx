@@ -14,8 +14,28 @@ import { RecipeModal } from './components/RecipeModal';
 
 const CART_STORAGE_KEY = 'willow_farm_cart_items';
 
+// The farmer view only lives at /farmer so it never shows up as a tab
+// customers can click from the market page.
+const viewModeFromPath = (): ViewMode =>
+  window.location.pathname.startsWith('/farmer') ? 'farmer' : 'market';
+
 export default function App() {
-  const [viewMode, setViewMode] = useState<ViewMode>('market');
+  const [viewMode, setViewModeState] = useState<ViewMode>(viewModeFromPath);
+
+  // Keep the URL and browser back/forward in sync with the current view.
+  const setViewMode = useCallback((mode: ViewMode) => {
+    setViewModeState(mode);
+    const path = mode === 'farmer' ? '/farmer' : '/';
+    if (window.location.pathname !== path) {
+      window.history.pushState({ viewMode: mode }, '', path);
+    }
+  }, []);
+
+  useEffect(() => {
+    const onPopState = () => setViewModeState(viewModeFromPath());
+    window.addEventListener('popstate', onPopState);
+    return () => window.removeEventListener('popstate', onPopState);
+  }, []);
   const [produceList, setProduceList] = useState<ProduceItem[]>(INITIAL_PRODUCE);
   const [orders, setOrders] = useState<Order[]>([]);
   const [stats, setStats] = useState<InventoryStats>({
