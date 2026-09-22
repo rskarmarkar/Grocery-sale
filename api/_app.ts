@@ -738,6 +738,7 @@ app.post('/api/recipes/from-cart', async (req, res) => {
   }
 
   console.log('GEMINI_API_KEY present at runtime:', !!process.env.GEMINI_API_KEY);
+  console.log('env keys matching GEMINI/GOOGLE/VERCEL_ENV:', Object.keys(process.env).filter(k => /GEMINI|GOOGLE|^VERCEL_ENV$|VERCEL_TARGET_ENV/.test(k)));
   const ai = getGenAI();
 
   if (ai) {
