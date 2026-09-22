@@ -737,6 +737,7 @@ app.post('/api/recipes/from-cart', async (req, res) => {
     return;
   }
 
+  console.log('GEMINI_API_KEY present at runtime:', !!process.env.GEMINI_API_KEY);
   const ai = getGenAI();
 
   if (ai) {
