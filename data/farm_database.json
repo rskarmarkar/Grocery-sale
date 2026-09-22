@@ -2,7 +2,7 @@
   "produce": [
     {
       "id": "prod-1790050817081-143",
-      "name": "Avocado",
+      "name": "Avocado (एवोकाडो)",
       "category": "Vegetable",
       "price": 3.5,
       "unit": "lb",
@@ -14,7 +14,7 @@
       "badge": "Fresh Today",
       "status": "available",
       "createdAt": "2026-09-22T04:20:17.081Z",
-      "updatedAt": "2026-09-22T04:20:36.619Z"
+      "updatedAt": "2026-09-22T06:00:28.891Z"
     },
     {
       "id": "prod-1",

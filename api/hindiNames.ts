@@ -4,6 +4,7 @@
 // Devanagari when it isn't a recognized item.
 
 const PRODUCE_DICTIONARY: Record<string, string> = {
+  'avocado': 'एवोकाडो',
   'tomato': 'टमाटर',
   'potato': 'आलू',
   'onion': 'प्याज़',
