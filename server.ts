@@ -1,8 +1,11 @@
+import dotenv from 'dotenv';
 import express from 'express';
 import path from 'path';
 import fs from 'fs';
 import { createServer as createViteServer } from 'vite';
 import { GoogleGenAI } from '@google/genai';
+
+dotenv.config({ path: '.env.local' });
 
 const app = express();
 const PORT = 3000;
@@ -775,7 +778,10 @@ Requirements:
 - Only return the JSON array, no markdown formatting backticks if possible, or clean standard JSON.
 - Every recipe MUST use at least one (preferably multiple) of the customer's cart produce items.
 - Keep pantry staples realistic (salt, pepper, oil, butter, garlic, pasta, rice, flour, simple seasonings).
-- Instructions should be easy to follow for home cooks.`;
+- Instructions should be easy to follow for home cooks.
+- The 3 recipes MUST differ from each other in cuisine style and cooking technique - for example, mix things like a grilled or roasted dish, a raw/salad-style preparation, a soup or stew, a stir-fry, or a baked dish, rather than defaulting to pasta or Italian preparations for more than one recipe.
+- Draw inspiration from a wide range of global cuisines (Mediterranean, Mexican, Middle Eastern, East/Southeast Asian, Indian, American comfort food, etc.) instead of defaulting to Italian-style dishes.
+- Avoid generic farm-to-table cliches like "panzanella," "crudo," or "confit" unless they are genuinely the best fit for the ingredients.`;
 
       const modelsToTry = ['gemini-flash-latest', 'gemini-3.1-flash-lite', 'gemini-3.8-flash'];
       let parsedRecipes: any = null;
