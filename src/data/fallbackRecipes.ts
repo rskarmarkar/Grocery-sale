@@ -39,7 +39,7 @@ const RECIPE_TEMPLATES: RecipeTemplate[] = [
   {
     id: 'tmpl-kale-egg-bowl',
     title: 'Crispy Garlic Lacinato Kale & Farm Egg Hash',
-    matchIngredients: ['kale', 'egg', 'onion', 'pepper'],
+    matchIngredients: ['kale', 'spinach', 'egg', 'onion', 'pepper'],
     prepTime: '8 mins',
     cookTime: '12 mins',
     servings: '2 servings',

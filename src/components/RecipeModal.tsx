@@ -299,7 +299,7 @@ ${recipe.chefTip || 'Harvested fresh from Willow Creek Farm.'}
                   Add Produce to Get Recipes
                 </h3>
                 <p className="text-xs sm:text-sm text-muted leading-relaxed mb-6">
-                  Select fresh heirloom tomatoes, sweet corn, greens, eggs, or berries into your cart first. Our farm chef will instantly generate custom recipes centered around what you picked!
+                  Add some tomatoes, corn, greens, eggs, or berries to your cart first. Our farm chef will instantly generate custom recipes centered around what you picked!
                 </p>
                 <button
                   onClick={() => {

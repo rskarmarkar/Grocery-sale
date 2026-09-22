@@ -62,7 +62,7 @@ These are just plain rules, like a calculator — same input always gives the sa
 When a shopper clicks **"Get Fresh Ideas"** in the recipe feature, the app sends a request to Google's Gemini AI asking it to write three brand-new recipes. This is the only part of the app where the answer isn't fixed — ask twice, and you may get two different sets of recipes, because the AI is generating fresh text each time rather than picking from a list.
 
 **What the AI is given:**
-- The name, quantity, unit, category, and harvest note of each item currently in the cart (e.g., "Heirloom Brandywine Tomatoes, 3 lb, Category: Vegetable, Note: Vine-ripened, picked this morning")
+- The name, quantity, unit, category, and harvest note of each item currently in the cart (e.g., "Tomatoes (टमाटर), 3 lb, Category: Vegetable, Note: Vine-ripened, picked this morning")
 - Whatever dietary or meal-type filter the shopper picked (like "Vegetarian" or "Breakfast & Brunch")
 
 **What the AI is never given:**

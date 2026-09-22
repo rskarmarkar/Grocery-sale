@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { 
-  Plus, Edit, Trash2, Package, CheckCircle2, Clock, AlertTriangle, 
-  Search, RefreshCw, DollarSign, TrendingUp, Sparkles, Filter, 
-  Phone, MapPin, ChevronRight, X, Leaf, Save, Cloud
+import {
+  Plus, Edit, Trash2, Package, CheckCircle2, Clock, AlertTriangle,
+  Search, RefreshCw, DollarSign, TrendingUp, Sparkles, Filter,
+  Phone, MapPin, ChevronRight, X, Leaf, Save, Cloud, Upload
 } from 'lucide-react';
 import { ProduceItem, Order, InventoryStats } from '../types';
 import { Button } from './ui/Button';
@@ -21,15 +21,15 @@ interface FarmerDashboardProps {
 // Preset photo selections for easy farmer produce setup
 const PHOTO_PRESETS = [
   { label: 'Tomatoes', url: 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=800&auto=format&fit=crop&q=80' },
-  { label: 'Kale / Greens', url: 'https://images.unsplash.com/photo-1692011435130-c95a0d94224b?w=800&auto=format&fit=crop&q=80' },
+  { label: 'Spinach', url: 'https://images.unsplash.com/photo-1692011435130-c95a0d94224b?w=800&auto=format&fit=crop&q=80' },
   { label: 'Apples', url: 'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=800&auto=format&fit=crop&q=80' },
   { label: 'Carrots', url: 'https://images.unsplash.com/photo-1633380110125-f6e685676160?w=800&auto=format&fit=crop&q=80' },
   { label: 'Corn', url: 'https://images.unsplash.com/photo-1551754655-cd27e38d2076?w=800&auto=format&fit=crop&q=80' },
-  { label: 'Basil / Herbs', url: 'https://images.unsplash.com/photo-1776257217010-1c2e92207f2a?w=800&auto=format&fit=crop&q=80' },
-  { label: 'Farm Eggs', url: 'https://images.unsplash.com/photo-1660224286794-fc173fa9295c?w=800&auto=format&fit=crop&q=80' },
+  { label: 'Basil', url: 'https://images.unsplash.com/photo-1776257217010-1c2e92207f2a?w=800&auto=format&fit=crop&q=80' },
+  { label: 'Eggs', url: 'https://images.unsplash.com/photo-1660224286794-fc173fa9295c?w=800&auto=format&fit=crop&q=80' },
   { label: 'Honey', url: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=800&auto=format&fit=crop&q=80' },
-  { label: 'Berries', url: 'https://images.unsplash.com/photo-1464965911861-746a04b4bca6?w=800&auto=format&fit=crop&q=80' },
-  { label: 'Snap Peas', url: 'https://images.unsplash.com/photo-1592394533824-9440e5d68530?w=800&auto=format&fit=crop&q=80' },
+  { label: 'Strawberries', url: 'https://images.unsplash.com/photo-1464965911861-746a04b4bca6?w=800&auto=format&fit=crop&q=80' },
+  { label: 'Green Peas', url: 'https://images.unsplash.com/photo-1592394533824-9440e5d68530?w=800&auto=format&fit=crop&q=80' },
 ];
 
 export const FarmerDashboard: React.FC<FarmerDashboardProps> = ({
@@ -71,9 +71,9 @@ export const FarmerDashboard: React.FC<FarmerDashboardProps> = ({
     setFormStock('30');
     setFormOrganic(true);
     setFormHarvestNote('Picked fresh this morning');
-    setFormDescription('Naturally grown with organic compost, crisp and full of flavor.');
+    setFormDescription('Grown with organic compost, fresh and full of flavor.');
     setFormImageUrl(PHOTO_PRESETS[0].url);
-    setFormBadge('Picked Today');
+    setFormBadge('Fresh Today');
     setIsModalOpen(true);
   };
 
@@ -124,6 +124,18 @@ export const FarmerDashboard: React.FC<FarmerDashboardProps> = ({
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (typeof reader.result === 'string') {
+        setFormImageUrl(reader.result);
+      }
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleQuickRestock = async (produce: ProduceItem, delta: number) => {
@@ -685,7 +697,7 @@ export const FarmerDashboard: React.FC<FarmerDashboardProps> = ({
                     required
                     value={formName}
                     onChange={(e) => setFormName(e.target.value)}
-                    placeholder="e.g., Sweet Bi-Color Butter Corn"
+                    placeholder="e.g., Corn (भुट्टा)"
                     className="w-full px-3.5 py-2 rounded-xl bg-cream border border-border text-sm text-ink focus:outline-none focus:ring-2 focus:ring-sprout-900"
                   />
                 </div>
@@ -792,7 +804,7 @@ export const FarmerDashboard: React.FC<FarmerDashboardProps> = ({
                     type="text"
                     value={formBadge}
                     onChange={(e) => setFormBadge(e.target.value)}
-                    placeholder="e.g., Just Picked, Farmer's Pick"
+                    placeholder="e.g., Fresh Today, Organic"
                     className="w-full px-3.5 py-2 rounded-xl bg-cream border border-border text-sm text-ink focus:outline-none focus:ring-2 focus:ring-sprout-900"
                   />
                 </div>
@@ -811,10 +823,41 @@ export const FarmerDashboard: React.FC<FarmerDashboardProps> = ({
                   </label>
                 </div>
 
-                {/* Photo Preset Selection */}
+                {/* Photo Selection */}
                 <div className="sm:col-span-2">
                   <label className="block text-xs font-bold text-muted mb-2">
-                    Produce Photo Preset
+                    Produce Photo
+                  </label>
+
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-14 h-14 rounded-lg bg-pale overflow-hidden shrink-0 border border-border">
+                      {formImageUrl ? (
+                        <img
+                          src={formImageUrl}
+                          alt="Selected produce"
+                          referrerPolicy="no-referrer"
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-muted">
+                          <Leaf className="w-5 h-5" />
+                        </div>
+                      )}
+                    </div>
+                    <label className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-cream border border-border text-xs font-semibold text-ink cursor-pointer hover:bg-border-soft transition-colors">
+                      <Upload className="w-4 h-4" />
+                      <span>Upload your own photo</span>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handlePhotoUpload}
+                        className="hidden"
+                      />
+                    </label>
+                  </div>
+
+                  <label className="block text-[11px] font-semibold text-muted mb-2">
+                    Or pick a preset
                   </label>
                   <div className="grid grid-cols-5 gap-2">
                     {PHOTO_PRESETS.map((preset) => (

@@ -9,7 +9,7 @@ export interface ProduceItem {
   harvestNote: string;
   description: string;
   imageUrl?: string;
-  badge?: string; // e.g., "Picked Today", "Farmer's Favorite", "Sweet & Crisp"
+  badge?: string; // e.g., "Fresh Today", "Organic", "Low Stock"
   status: 'available' | 'sold_out' | 'hidden';
   createdAt: string;
   updatedAt: string;
