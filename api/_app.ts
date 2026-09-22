@@ -6,6 +6,7 @@ import express from 'express';
 import path from 'path';
 import fs from 'fs';
 import { GoogleGenAI } from '@google/genai';
+import { withHindiName } from './hindiNames.js';
 
 dotenv.config({ path: '.env.local' });
 
@@ -337,7 +338,7 @@ app.post('/api/produce', (req, res) => {
 
   const newProduce: ProduceRecord = {
     id: `prod-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
-    name: String(name).trim(),
+    name: withHindiName(String(name)),
     category: category || 'Vegetables',
     price: Number(price),
     unit: unit || 'lb',
