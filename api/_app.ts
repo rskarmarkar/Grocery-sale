@@ -814,6 +814,8 @@ Requirements:
             err?.status === 429 ||
             (typeof err?.message === 'string' && (err.message.includes('503') || err.message.includes('demand') || err.message.includes('UNAVAILABLE')));
 
+          console.error(`Gemini call failed for model ${modelName}:`, err?.message || err);
+
           if (isCapacityOrBusy) {
             continue;
           }
@@ -830,7 +832,8 @@ Requirements:
         });
         return;
       }
-    } catch {
+    } catch (err: any) {
+      console.error('Recipe generation via Gemini failed entirely:', err?.message || err);
       // Gracefully continue to curated farm kitchen fallback
     }
   }
